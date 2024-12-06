@@ -1,5 +1,5 @@
 {
-  "Chaos_sf2_file": [
+  "Chaos": [
     "Drum Stan1 SC88P",
     "Drum Room",
     "Drum Room SC88P",
@@ -13,7 +13,7 @@
     "DRUM SFX",
     "CM 64 32 MT 32"
   ],
-  "FluidR3_GM_sf2_file": [
+  "FluidR3_GM": [
     "Standard",
     "Standard 1",
     "Standard 2",
@@ -46,7 +46,7 @@
     "Brush 2",
     "Orchestra Kit"
   ],
-  "JCLive_sf2_file": [
+  "JCLive": [
     "Standard part2",
     "Room PART2",
     "Power PART2",
@@ -78,7 +78,7 @@
     "Orchestra",
     "SFX"
   ],
-  "SBLive_sf2": [
+  "SBLive": [
     "Standard",
     "Room",
     "Power",

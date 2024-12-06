@@ -19,5 +19,7 @@ bin-release/
 # information for Eclipse / Flash Builder.
 
 # Jetbrains
-
 .idea/
+
+# Mac
+.DS_Store

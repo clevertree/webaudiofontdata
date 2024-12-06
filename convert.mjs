@@ -1,11 +1,11 @@
 import fs from "fs";
-import {drumSets} from "./drumSets.mjs";
+import drumSetNames from "./public/drumSetNames.json";
 
 const PRESET_PATH_INSTRUMENT_KEYS = '/instrumentKeys.json'
 const PRESET_PATH_INSTRUMENT_NAMES = '/instrumentNames.json'
 const PRESET_PATH_PERCUSSION_KEYS = '/percussionKeys.json'
 const PRESET_PATH_PERCUSSION_NAMES = '/percussionNames.json'
-const PRESET_PATH_DRUMSET_KEYS = '/drumSets.json'
+const PRESET_PATH_DRUMSET_KEYS = '/drumSetKeys.json'
 const PRESET_PATH_DRUMSET_NAMES = '/drumSetNames.json'
 const PRESET_PATH_INSTRUMENT = '/i'
 const PRESET_PATH_PERCUSSION = '/p'
@@ -15,8 +15,12 @@ const DIR = './sound'
 const DIRS = './public'
 const files = fs.readdirSync(DIR);
 const drumPresets = {};
-const drumKeys = [];
+const percussionKeys = [];
 const instrumentKeys = [];
+
+// fs.mkdirSync(`${DIRS}${PRESET_PATH_INSTRUMENT}`)
+// fs.mkdirSync(`${DIRS}${PRESET_PATH_PERCUSSION}`)
+// fs.mkdirSync(`${DIRS}${PRESET_PATH_DRUMSET}`)
 
 for (const file of files) {
     if (file.endsWith('.js')) {
@@ -30,16 +34,15 @@ for (const file of files) {
             if (!config)
                 throw new Error("Unable to evaluate webfont: " + file);
             fs.writeFileSync(`${DIRS}${PRESET_PATH_PERCUSSION}/${drumKey}.json`, JSON.stringify(config));
-            drumKeys.push(drumKey);
+            percussionKeys.push(drumKey);
             const [pitch, drumSetID, ...libraryStringParts] = drumKey.split('_')
             const libraryString = libraryStringParts.join('_').replace(/\.js$/, '');
-            const drumSetName = drumSets[libraryString][parseInt(drumSetID)];
+            const drumSetName = drumSetNames[libraryString][parseInt(drumSetID)];
             const libraryName = libraryString
                 .replace(/_file$/, '')
                 .replace(/_sf2$/, '')
             const presetName = `${libraryName}_${drumSetName}`
                 .replaceAll(' ', '_')
-                .toLowerCase();
             if (!drumPresets[presetName])
                 drumPresets[presetName] = {zones: []}
             drumPresets[presetName].zones.push(...config.zones)
@@ -51,16 +54,16 @@ for (const file of files) {
             const config = eval(fontJS);
             if (!config)
                 throw new Error("Unable to evaluate webfont: " + file);
-            fs.writeFileSync(`${DIRS}/${PRESET_PATH_INSTRUMENT}${instrumentKey}.json`, JSON.stringify(config));
+            fs.writeFileSync(`${DIRS}${PRESET_PATH_INSTRUMENT}/${instrumentKey}.json`, JSON.stringify(config));
             instrumentKeys.push(instrumentKey);
         }
     }
 }
 for (const presetName of Object.keys(drumPresets)) {
     const config = drumPresets[presetName];
-    fs.writeFileSync(`${DIRS}/s/${presetName}.json`, JSON.stringify(config));
+    fs.writeFileSync(`${DIRS}${PRESET_PATH_DRUMSET}/${presetName}.json`, JSON.stringify(config));
 }
 fs.writeFileSync(`${DIRS}${PRESET_PATH_INSTRUMENT_KEYS}`, JSON.stringify(instrumentKeys));
-fs.writeFileSync(`${DIRS}${PRESET_PATH_DRUMSET_KEYS}`, JSON.stringify(drumKeys));
-fs.writeFileSync(`${DIRS}${PRESET_PATH_DRUMSET}`, JSON.stringify(Object.keys(drumPresets)));
+fs.writeFileSync(`${DIRS}${PRESET_PATH_PERCUSSION_KEYS}`, JSON.stringify(percussionKeys));
+fs.writeFileSync(`${DIRS}${PRESET_PATH_DRUMSET_KEYS}`, JSON.stringify(Object.keys(drumPresets)));
 
