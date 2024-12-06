@@ -3,9 +3,10 @@ import {drumSets} from "./drumSets.mjs";
 
 const PRESET_PATH_INSTRUMENT_KEYS = '/instrumentKeys.json'
 const PRESET_PATH_INSTRUMENT_NAMES = '/instrumentNames.json'
-const PRESET_PATH_PERCUSSION_KEYS = '/percussion.json'
+const PRESET_PATH_PERCUSSION_KEYS = '/percussionKeys.json'
 const PRESET_PATH_PERCUSSION_NAMES = '/percussionNames.json'
 const PRESET_PATH_DRUMSET_KEYS = '/drumSets.json'
+const PRESET_PATH_DRUMSET_NAMES = '/drumSetNames.json'
 const PRESET_PATH_INSTRUMENT = '/i'
 const PRESET_PATH_PERCUSSION = '/p'
 const PRESET_PATH_DRUMSET = '/s'
@@ -28,7 +29,7 @@ for (const file of files) {
             const config = eval(fontJS);
             if (!config)
                 throw new Error("Unable to evaluate webfont: " + file);
-            fs.writeFileSync(`${DIRS}${PRESET_PATH_PERCUSSION}/128${drumKey}.json`, JSON.stringify(config));
+            fs.writeFileSync(`${DIRS}${PRESET_PATH_PERCUSSION}/${drumKey}.json`, JSON.stringify(config));
             drumKeys.push(drumKey);
             const [pitch, drumSetID, ...libraryStringParts] = drumKey.split('_')
             const libraryString = libraryStringParts.join('_').replace(/\.js$/, '');
